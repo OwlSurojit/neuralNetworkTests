@@ -6,5 +6,6 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Program Files/processing-3.3.7/core/library/core.jar" sourcepath="C:/Program Files/processing-3.3.7/core/library/core.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
