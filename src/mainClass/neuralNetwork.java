@@ -1,10 +1,10 @@
 package mainClass;
 
-class neuralNetwork {
+public class neuralNetwork {
   Matrix I, H, O, Wih, Who, Bih, Bho;
   double learningRate = 0.05;
 
-  neuralNetwork(int inputNodes, int hiddenNodes, int outputNodes) {
+  public neuralNetwork(int inputNodes, int hiddenNodes, int outputNodes) {
     this.I = new Matrix(inputNodes, 1);
     this.H = new Matrix(hiddenNodes, 1);
     this.O = new Matrix(outputNodes, 1);
@@ -14,11 +14,11 @@ class neuralNetwork {
     this.Bho = new Matrix(outputNodes, 1);
   }
 
-  void setLearningRate(double lr){
+  public void setLearningRate(double lr){
     this.learningRate = lr;
   }
 
-  void randomiseWeights(double lowest, double highest, int digitsAfterComma) {
+  public void randomiseWeights(double lowest, double highest, int digitsAfterComma) {
     this.Wih.randomise(lowest, highest, digitsAfterComma);
     this.Who.randomise(lowest, highest, digitsAfterComma);
     this.Bih.randomise(lowest, highest, digitsAfterComma);
@@ -64,7 +64,7 @@ class neuralNetwork {
     return this.O.arr[0];
   }
 
-  void backpropagation(double[] input, double[] expectedOutput) {
+   public void backpropagation(double[] input, double[] expectedOutput) {
 
     //feed forward
     this.I.define(input);

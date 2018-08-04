@@ -1,17 +1,17 @@
 package mainClass;
 
-class Matrix {
+public class Matrix {
 
   int rows, cols, digitsAfterComma;
   double[][] arr;
 
-  Matrix(int rows, int cols) {
+  public Matrix(int rows, int cols) {
     this.rows = rows; 
     this.cols = cols;
     this.arr = new double[rows][cols];
   }
 
-  void define(double[] def) {
+  public void define(double[] def) {
     for (int i=0; i<this.rows; i++) {
       for (int j=0; j<this.cols; j++) {
         this.arr[i][j] = def[i*cols+j];
@@ -19,7 +19,7 @@ class Matrix {
     }
   }
 
-  void randomise(double lowest, double highest, int digitsAfterComma) {
+  public void randomise(double lowest, double highest, int digitsAfterComma) {
     this.digitsAfterComma = digitsAfterComma;
     for (int i=0; i<this.rows; i++) {
       for (int j=0; j<this.cols; j++) {
@@ -28,7 +28,7 @@ class Matrix {
     }
   }
 
-  void scl(double scale) {
+  public void scl(double scale) {
     for (int i=0; i<this.rows; i++) {
       for (int j=0; j<this.cols; j++) {
         this.arr[i][j] *= scale;
@@ -36,7 +36,7 @@ class Matrix {
     }
   }
 
-  Matrix transpose() {
+  public Matrix transpose() {
     Matrix transposed = new Matrix(this.cols, this.rows);
     for (int i=0; i<this.rows; i++) {
       for (int j=0; j<this.cols; j++) {
@@ -46,7 +46,7 @@ class Matrix {
     return transposed;
   }
 
-  void debug() {
+  public void debug() {
     for (double[] i : this.arr) {
       System.out.print("[  ");
       for (double j : i) {
@@ -57,7 +57,7 @@ class Matrix {
     System.out.println();
   }
 
-  void sigmoidEach() {
+  public void sigmoidEach() {
     for (int i=0; i<this.rows; i++) {
       for (int j=0; j<this.cols; j++) {
         this.arr[i][j] = sigmoid(this.arr[i][j]);
@@ -65,7 +65,7 @@ class Matrix {
     }
   }
 
-  Matrix dSigmoidEach() {
+  public Matrix dSigmoidEach() {
     Matrix result = new Matrix(this.rows, this.cols);
     for (int i=0; i<this.rows; i++) {
       for (int j=0; j<this.cols; j++) {
@@ -75,7 +75,7 @@ class Matrix {
     return result;
   }
 
-  void add(Matrix b) throws IllegalArgumentException {
+  public void add(Matrix b) throws IllegalArgumentException {
     if (this.rows!=b.rows || this.cols!=b.cols) {
       throw new IllegalArgumentException("The matricies to add haven't got the same number of rows and columns!");
     }
@@ -86,7 +86,7 @@ class Matrix {
     }
   }
 
-  void multiply(Matrix b) {
+  public void multiply(Matrix b) {
     // hadamard product
     for (int i=0; i<this.rows; i++) {
       for (int j=0; j<this.cols; j++) {
@@ -103,7 +103,7 @@ class Matrix {
   }
 
 
-static Matrix add(Matrix a, Matrix b) throws IllegalArgumentException {
+public static Matrix add(Matrix a, Matrix b) throws IllegalArgumentException {
   if (a.rows!=b.rows || a.cols!=b.cols) {
     throw new IllegalArgumentException("The matricies to add haven't got the same number of rows and columns!");
   }
@@ -118,7 +118,7 @@ static Matrix add(Matrix a, Matrix b) throws IllegalArgumentException {
 }
 
 
-static Matrix substract(Matrix a, Matrix b) throws IllegalArgumentException {
+public static Matrix substract(Matrix a, Matrix b) throws IllegalArgumentException {
   if (a.rows!=b.rows || a.cols!=b.cols) {
     throw new IllegalArgumentException("The matricies haven't got the same number of rows and columns!");
   }
@@ -133,7 +133,7 @@ static Matrix substract(Matrix a, Matrix b) throws IllegalArgumentException {
 }
 
 
-static Matrix multiply(Matrix a, Matrix b) throws IllegalArgumentException {
+public static Matrix multiply(Matrix a, Matrix b) throws IllegalArgumentException {
   if (a.cols!=b.rows) {
     throw new IllegalArgumentException("The first matrix' number of columns isn't equal to the second matrix' number of rows!");
   }
@@ -148,9 +148,6 @@ static Matrix multiply(Matrix a, Matrix b) throws IllegalArgumentException {
   }
   return result;
 }
-
-
-
 
 
 public static double sigmoid(double x) {
