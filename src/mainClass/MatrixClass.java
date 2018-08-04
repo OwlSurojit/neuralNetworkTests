@@ -1,16 +1,17 @@
 package mainClass;
+
 class Matrix {
 
   int rows, cols, digitsAfterComma;
-  float[][] arr;
+  double[][] arr;
 
   Matrix(int rows, int cols) {
     this.rows = rows; 
     this.cols = cols;
-    this.arr = new float[rows][cols];
+    this.arr = new double[rows][cols];
   }
 
-  void define(float[] def) {
+  void define(double[] def) {
     for (int i=0; i<this.rows; i++) {
       for (int j=0; j<this.cols; j++) {
         this.arr[i][j] = def[i*cols+j];
@@ -18,16 +19,16 @@ class Matrix {
     }
   }
 
-  void randomise(float lowest, float highest, int digitsAfterComma) {
+  void randomise(double lowest, double highest, int digitsAfterComma) {
     this.digitsAfterComma = digitsAfterComma;
     for (int i=0; i<this.rows; i++) {
       for (int j=0; j<this.cols; j++) {
-        this.arr[i][j] = roundDigits((float) (Math.random()*highest+lowest), this.digitsAfterComma);
+        this.arr[i][j] = roundDigits((double) (Math.random()*highest+lowest), this.digitsAfterComma);
       }
     }
   }
 
-  void scl(float scale) {
+  void scl(double scale) {
     for (int i=0; i<this.rows; i++) {
       for (int j=0; j<this.cols; j++) {
         this.arr[i][j] *= scale;
@@ -46,14 +47,14 @@ class Matrix {
   }
 
   void debug() {
-    for (float[] i : this.arr) {
-      print("[  ");
-      for (float j : i) {
-        print(nf(j, 0, this.digitsAfterComma) + "  ");
+    for (double[] i : this.arr) {
+      System.out.print("[  ");
+      for (double j : i) {
+        System.out.print(roundDigits(j, this.digitsAfterComma) + "  ");
       }
-      print("]\n");
+      System.out.print("]\n");
     }
-    println();
+    System.out.println();
   }
 
   void sigmoidEach() {
@@ -94,15 +95,15 @@ class Matrix {
     }
   }
 
-  private float roundDigits(float num, int digitsAfterComma) {
-    int factor = (int) pow(10, digitsAfterComma);
-    num = round(num*factor);
+  private double roundDigits(double num, int digitsAfterComma) {
+    int factor = (int) Math.pow(10, digitsAfterComma);
+    num = Math.round(num*factor);
     num/=factor;
     return num;
   }
-}
 
-Matrix add(Matrix a, Matrix b) throws IllegalArgumentException {
+
+static Matrix add(Matrix a, Matrix b) throws IllegalArgumentException {
   if (a.rows!=b.rows || a.cols!=b.cols) {
     throw new IllegalArgumentException("The matricies to add haven't got the same number of rows and columns!");
   }
@@ -117,7 +118,7 @@ Matrix add(Matrix a, Matrix b) throws IllegalArgumentException {
 }
 
 
-Matrix substract(Matrix a, Matrix b) throws IllegalArgumentException {
+static Matrix substract(Matrix a, Matrix b) throws IllegalArgumentException {
   if (a.rows!=b.rows || a.cols!=b.cols) {
     throw new IllegalArgumentException("The matricies haven't got the same number of rows and columns!");
   }
@@ -132,7 +133,7 @@ Matrix substract(Matrix a, Matrix b) throws IllegalArgumentException {
 }
 
 
-Matrix multiply(Matrix a, Matrix b) throws IllegalArgumentException {
+static Matrix multiply(Matrix a, Matrix b) throws IllegalArgumentException {
   if (a.cols!=b.rows) {
     throw new IllegalArgumentException("The first matrix' number of columns isn't equal to the second matrix' number of rows!");
   }
@@ -152,14 +153,15 @@ Matrix multiply(Matrix a, Matrix b) throws IllegalArgumentException {
 
 
 
-public static float sigmoid(float x) {
-  return 1/(1+exp(-x));
+public static double sigmoid(double x) {
+  return (1/(1 + Math.exp(-x)));
 }
 
-public static float dSigmoid(float x) {
+public static double dSigmoid(double x) {
   //sigmoid'(x) = sigmoid(x) * (1 - sigmoid(x))
   //return sigmoid(x) * (1 - sigmoid(x)) ;
 
   //but here the output is already "sigmoided", therefore:
   return x * (1 - x);
+}
 }
