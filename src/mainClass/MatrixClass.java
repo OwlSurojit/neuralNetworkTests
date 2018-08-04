@@ -1,3 +1,4 @@
+package mainClass;
 class Matrix {
 
   int rows, cols, digitsAfterComma;

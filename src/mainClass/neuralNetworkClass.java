@@ -1,3 +1,4 @@
+package mainClass;
 class neuralNetwork {
   Matrix I, H, O, Wih, Who, Bih, Bho;
   float learningRate = 0.05;
