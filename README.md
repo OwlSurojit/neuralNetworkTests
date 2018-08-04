@@ -1,2 +1,2 @@
 # neuralNetworkTests
-A very simple Neural Network implementation in Processing, along with some tests
+A very simple Neural Network implementation in Java, along with some tests
