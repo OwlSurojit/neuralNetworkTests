@@ -47,12 +47,14 @@ public class Matrix {
 	}
 
 	public void debug() {
+		int idx = 0;
 		for (double[] i : this.arr) {
-			System.out.print("[  ");
+			System.out.print(idx + " [\t");
 			for (double j : i) {
-				System.out.print(roundDigits(j, this.digitsAfterComma) + "  ");
+				System.out.print(roundDigits(j, this.digitsAfterComma) + "\t");
 			}
 			System.out.print("]\n");
+			idx++;
 		}
 		System.out.println();
 	}
