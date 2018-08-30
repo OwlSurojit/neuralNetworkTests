@@ -1,11 +1,11 @@
 package tests;
 
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JTextField;
 
 import mainClass.neuralNetwork;
 
@@ -35,7 +35,8 @@ final public class Converters implements ActionListener {
 			int numOfTrainingSessions) {
 
 		/**
-		 * There are two modes: 1 - numOfTrainingSessions is defined as a natural number; 
+		 * There are two modes: 
+		 * 1 - numOfTrainingSessions is defined as a natural number; 
 		 * 	The neural network is then trained that many times. 
 		 * 2 - numOfTrainingSessions is defined as STOP_ON_INPUT or INFINITELY; 
 		 * 	The neural network is then trained until the user interrupts by pressing ENTER.
@@ -47,29 +48,20 @@ final public class Converters implements ActionListener {
 		nn.randomiseWeights(0, 1, 2);
 		double[] dec = new double[maxDec];
 		int x;
+		ControlWindow cw = (new Converters()).new ControlWindow();
 
 		if (numOfTrainingSessions == STOP_ON_INPUT || numOfTrainingSessions == INFINITELY) {
-			JFrame frame = new JFrame();
-			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			frame.setResizable(false);
-			frame.setSize(160, 90);
-			frame.setTitle("Stop the training");
-			frame.setLocation(320, 180);
-			//frame.addMou
-			JButton b = new JButton("Stop");
-			b.setActionCommand("stop");
-			b.addActionListener(this);
-			frame.getContentPane().add(b);
-			frame.setVisible(true);
 			int counter = 0;
 			while (!stop) {
 				x = (int) (Math.random() * maxDec);
 				dec[x] = 1;
-				nn.backpropagation(decToBin(x, 6), dec);
+				nn.backpropagation(decToBin(x, maxBinDigits), dec);
 				dec[x] = 0;
 				counter++;
+				cw.update(counter);
 			}
 			System.out.println("trained " + counter + " times");
+			cw.close();
 		} else {
 
 			for (int i = 0; i < numOfTrainingSessions; i++) {
@@ -82,7 +74,7 @@ final public class Converters implements ActionListener {
 				 * 6)[0] + " " + decToBin(x, 6)[1] + " " + decToBin(x, 6)[2] + " " + decToBin(x,
 				 * 6)[3] + " " + decToBin(x, 6)[4] + " " + decToBin(x, 6)[5]);
 				 */
-				nn.backpropagation(decToBin(x, 6), dec);
+				nn.backpropagation(decToBin(x, maxBinDigits), dec);
 				dec[x] = 0;
 			}
 		}
@@ -90,16 +82,58 @@ final public class Converters implements ActionListener {
 		return nn;
 	}
 
+	private class ControlWindow {
+
+		JFrame frame;
+		JButton btn;
+		JTextField info;
+
+		ControlWindow() {
+			this.init(true, true);
+		}
+
+		void init(boolean withBtn, boolean withCounter) {
+			this.frame = new JFrame();
+			this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			this.frame.setResizable(false);
+			this.frame.setSize(160, 90);
+			this.frame.setTitle("training...");
+			this.frame.setLocation(320, 180);
+
+			if (withBtn) {
+				this.btn = new JButton("Stop the training");
+				this.btn.setActionCommand("stop");
+				this.btn.addActionListener(new Converters());
+				this.frame.add(this.btn, BorderLayout.SOUTH);
+			}
+
+			if (withCounter) {
+				this.info = new JTextField("not trained yet");
+				this.info.setEditable(false);
+				this.frame.add(this.info);
+			}
+			this.frame.setVisible(true);
+		}
+
+		void update(int counter) {
+			this.info.setText("trained " + counter + " times");
+		}
+
+		void close() {
+			this.frame.setVisible(false);
+		}
+
+	}
+
 	public static void main(String[] args) {
-		// System.out.println(decToBin(52, 1250).length);
-		binToDec(.1, 128, 4, STOP_ON_INPUT).feedForwardDebug(new double[] { 0, 1, 0, 0 }, true);
+		Converters.binToDec(.1, 32, 4, STOP_ON_INPUT).feedForwardDebug(new double[] { 0, 1, 0, 0 }, true);
+		System.exit(0);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("stop")) {
 			stop = true;
-			System.out.println("now");
 		}
 	}
 
